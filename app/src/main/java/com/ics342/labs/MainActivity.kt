@@ -3,6 +3,8 @@ package com.ics342.labs
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,10 +12,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
@@ -54,11 +63,31 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
 //                    Greeting("Android")
-                    DataItemList(dataItems = dataItems)
+                DataScreen(dataItems)
                 }
             }
         }
     }
+}
+
+@Composable
+fun DataScreen(items: List<DataItem>) {
+    var dataItem by remember { mutableStateOf<DataItem?>(null) }
+    var showDialog by remember { mutableStateOf(false) }
+    DataItemList(items) { dataItem = it}
+    dataItem?.let {it
+        AlertDialog(
+            onDismissRequest = {dataItem = null},
+            title = {Text(it.name)},
+            text = {Text(it.description)},
+            confirmButton = {},
+            dismissButton = {
+                Button({dataItem = null}) {
+                    Text("Okay")
+                }; showDialog = false},
+        )
+        val dismissFunction = { dataItem = null }}
+
 }
 
 @Composable
@@ -82,18 +111,39 @@ fun DataItemView(dataItem: DataItem) {
             Text(text = dataItem.description, style = TextStyle(fontSize = 12.sp))
         }
     }
-
 }
 
+
 @Composable
-fun DataItemList(dataItems: List<DataItem>) {
+fun DataItemList(
+    dataItems: List<DataItem>,
+    dataItemClicked: (DataItem) -> Unit
+) {
     /* Create the list here. This function will call DataItemView() */
-    LazyColumn {
-        for(data in dataItems){
-            item{DataItemView(data)}
+//    var showDialog by remember { mutableStateOf(false) }
+//    if (showDialog) {
+//        AlertDialog(
+//            onDismissRequest = {showDialog = false},
+//            title = {Text(dataItems.name)},
+//            text = {},
+//            confirmButton = {},
+//            dismissButton = {},
+//        )
+//    }
+    LazyColumn(){
+        items(items = dataItems) {
+            Box(
+                modifier = Modifier.clickable {
+                    dataItemClicked(it)
+                }
+            ) {
+                DataItemView(dataItem = it)
+            }
         }
     }
 }
+
+
 
 @Preview(showBackground = true)
 @Composable
