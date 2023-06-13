@@ -72,21 +72,20 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun DataScreen(items: List<DataItem>) {
-    var dataItem by remember { mutableStateOf<DataItem?>(null) }
-    var showDialog by remember { mutableStateOf(false) }
-    DataItemList(items) { dataItem = it}
-    dataItem?.let {it
+    var showDialog by remember { mutableStateOf<DataItem?>(null) }
+    DataItemList(items) { showDialog = it}
+    showDialog?.let {it
         AlertDialog(
-            onDismissRequest = {dataItem = null},
+            onDismissRequest = {showDialog = null},
             title = {Text(it.name)},
             text = {Text(it.description)},
             confirmButton = {},
             dismissButton = {
-                Button({dataItem = null}) {
+                Button({showDialog = null}) {
                     Text("Okay")
-                }; showDialog = false},
+                }},
         )
-        val dismissFunction = { dataItem = null }}
+        val dismissFunction = { showDialog = null }}
 
 }
 
@@ -119,17 +118,6 @@ fun DataItemList(
     dataItems: List<DataItem>,
     dataItemClicked: (DataItem) -> Unit
 ) {
-    /* Create the list here. This function will call DataItemView() */
-//    var showDialog by remember { mutableStateOf(false) }
-//    if (showDialog) {
-//        AlertDialog(
-//            onDismissRequest = {showDialog = false},
-//            title = {Text(dataItems.name)},
-//            text = {},
-//            confirmButton = {},
-//            dismissButton = {},
-//        )
-//    }
     LazyColumn(){
         items(items = dataItems) {
             Box(
