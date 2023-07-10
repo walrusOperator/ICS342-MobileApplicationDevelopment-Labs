@@ -45,3 +45,5 @@ private fun dataFromJsonString(json: String): List<personalDetails> {
     val jsonAdapter: JsonAdapter<List<personalDetails>> = moshi.adapter<List<personalDetails>>()
     return jsonAdapter.fromJson(json)
 }
+
+
