@@ -40,8 +40,8 @@ private fun loadData(resources: Resources): String {
         .use { it.readText() }
 }
 
-private fun dataFromJsonString(json: String): List</* Add your data type here */> {
+private fun dataFromJsonString(json: String): List<personalDetails> {
     val moshi: Moshi = Moshi.Builder().build()
-    val jsonAdapter: JsonAdapter<List</* Put your data type here */>> = moshi.adapter<List</* put your data type here*/>>()
+    val jsonAdapter: JsonAdapter<List<personalDetails>> = moshi.adapter<List<personalDetails>>()
     return jsonAdapter.fromJson(json)
 }
