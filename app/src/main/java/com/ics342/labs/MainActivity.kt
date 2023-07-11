@@ -4,14 +4,22 @@ import android.content.res.Resources
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.ics342.labs.ui.theme.LabsTheme
 import com.squareup.moshi.JsonAdapter
@@ -30,10 +38,11 @@ class MainActivity : ComponentActivity() {
                     /*
                     Display the items from the Json file in a LazyColumn
                      */
-
-                    lazyColumn {
+                    LazyColumn {
                         for(person in data){
-
+                            item {
+                                personView(data = person)
+                            }
                         }
                     }
                 }
@@ -41,9 +50,27 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-private fun personView() {
-
+@Composable
+private fun personView(data : PersonalDetails) {
+    Column {
+        Text(
+            text = "ID: ${data.id}",
+            style = TextStyle(fontSize = 20.sp),
+        )
+        Text(
+            text = "First Name: ${data.firstName}",
+            style = TextStyle(fontSize = 20.sp),
+        )
+        Text(
+            text = "Last Name: ${data.lastName}",
+            style = TextStyle(fontSize = 20.sp),
+        )
+        Text(
+            text = "Age: ${data.age}",
+            style = TextStyle(fontSize = 20.sp),
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+    }
 }
 
 private fun loadData(resources: Resources): String {
@@ -59,13 +86,4 @@ private fun dataFromJsonString(json: String): List<PersonalDetails> {
     return jsonAdapter.fromJson(json)
 }
 
-//@Composable
-//fun DataItemList(dataItems: List<DataItem>, navController : NavController) {
-//    /* Create the list here. This function will call DataItemView() */
-//    LazyColumn {
-//        for(data in dataItems){
-//            item{DataItemView(data, navController = navController)}
-//        }
-//    }
-//}
 
