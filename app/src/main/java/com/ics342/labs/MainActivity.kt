@@ -58,11 +58,7 @@ private fun personView(data : PersonalDetails) {
             style = TextStyle(fontSize = 20.sp),
         )
         Text(
-            text = "First Name: ${data.firstName}",
-            style = TextStyle(fontSize = 20.sp),
-        )
-        Text(
-            text = "Last Name: ${data.lastName}",
+            text = "Name: ${data.firstName} ${data.lastName}",
             style = TextStyle(fontSize = 20.sp),
         )
         Text(
