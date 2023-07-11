@@ -20,10 +20,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.ics342.labs.ui.theme.LabsTheme
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.adapter
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 
 class MainActivity : ComponentActivity() {
@@ -65,7 +66,7 @@ private fun personView(data : PersonalDetails) {
             text = "Age: ${data.age}",
             style = TextStyle(fontSize = 20.sp),
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(15.dp))
     }
 }
 
@@ -76,10 +77,11 @@ private fun loadData(resources: Resources): String {
         .use { it.readText() }
 }
 
+@OptIn(ExperimentalStdlibApi::class)
 private fun dataFromJsonString(json: String): List<PersonalDetails> {
-    val moshi: Moshi = Moshi.Builder().build()
-    val jsonAdapter: JsonAdapter<List<PersonalDetails>> = moshi.adapter<List<PersonalDetails>>()
-    return jsonAdapter.fromJson(json)
+    val moshi: Moshi = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
+    val jsonAdapter: JsonAdapter<List<PersonalDetails>> = moshi.adapter()
+    return jsonAdapter.fromJson(json) ?: listOf()
 }
 
 
