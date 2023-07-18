@@ -110,7 +110,7 @@ private fun PermissionRationaleDialog(
 
 private fun checkOrRequestPermission(
     context: Context,
-    permission: String,
+    permission: String, //Not in use. Unsure of where to apply
     launcher: ManagedActivityResultLauncher<String, Boolean>,
     permissionGranted: () -> Unit
 ) {
