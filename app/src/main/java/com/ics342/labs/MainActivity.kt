@@ -32,6 +32,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            //required to be mutable
             var hasPermission by remember { mutableStateOf(false)}// state for tracking if the permission has been granted
             var showPermissionRationale by remember { mutableStateOf(false)}// state for tracking if the rationale should be shown
             val context = LocalContext.current
