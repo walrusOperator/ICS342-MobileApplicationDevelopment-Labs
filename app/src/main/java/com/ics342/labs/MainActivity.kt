@@ -17,6 +17,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -30,8 +32,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            var hasPermission : Boolean = false// state for tracking if the permission has been granted
-            var showPermissionRationale : Boolean = false// state for tracking if the rationale should be shown
+            var hasPermission by remember { mutableStateOf(false)}// state for tracking if the permission has been granted
+            var showPermissionRationale by remember { mutableStateOf(false)}// state for tracking if the rationale should be shown
             val context = LocalContext.current
             val launcher = rememberLauncherForActivityResult(
                 contract = RequestPermission()
@@ -117,11 +119,11 @@ private fun checkOrRequestPermission(
     // Ask Android if the app has the permission with ContextCompat.checkSelfPermission
     // if permission is granted, call the permission granted function
     // if permission is not granted, launch the launcher for the permission
-    val permissionCheckResult = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
+    val permissionCheckResult = ContextCompat.checkSelfPermission(context, permission)
     if(permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
         permissionGranted()
     } else {
-        launcher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+        launcher.launch(permission)
     }
 }
 
