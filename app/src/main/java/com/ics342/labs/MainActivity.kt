@@ -62,7 +62,9 @@ class MainActivity : ComponentActivity() {
 }
 
 fun startNotificationService(context: Context) {
-    TODO("Start the Notification Service")
+//    TODO("Start the Notification Service")
+    val intent = Intent(context, NotificationService::class.java)
+    context.startService(intent)
 }
 
 private fun checkOrRequestPermission(
